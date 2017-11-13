@@ -45,9 +45,11 @@ public class FlashLightManager {
     public static void turnOnFlash(Camera camera) throws Exception {
         if(camera == null) throw new IllegalArgumentException("input camera is invalid");
         Camera.Parameters params = camera.getParameters();
-        params.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-        camera.setParameters(params);
-        camera.startPreview();
+        if(params != null) {
+            params.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+            camera.setParameters(params);
+            camera.startPreview();
+        }
     }
 
     /**
@@ -58,8 +60,11 @@ public class FlashLightManager {
     public static void turnOffFlash(Camera camera) throws Exception {
         if(camera == null) throw new IllegalArgumentException("input camera is invalid");
         Camera.Parameters params = camera.getParameters();
-        params.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-        camera.setParameters(params);
-        camera.stopPreview();
+        if(params != null) {
+            params.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+            camera.setParameters(params);
+            camera.stopPreview();
+        }
+
     }
 }

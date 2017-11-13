@@ -4,15 +4,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-
 import java.util.Date;
-
 import malinka.lightofgod.service.PowerOnListener;
 
 public class ScreenActionReceiver extends BroadcastReceiver {
 
     private boolean light;
     private int counterPowerPressed;
+    private Date pressedAt;
     private Date previousPressedAt;
 
     private final int INTERVAL = 5;
@@ -20,6 +19,7 @@ public class ScreenActionReceiver extends BroadcastReceiver {
     public ScreenActionReceiver() {
         this.light = true;
         this.counterPowerPressed = 0;
+        this.pressedAt = null;
         this.previousPressedAt = null;
     }
 
@@ -32,16 +32,19 @@ public class ScreenActionReceiver extends BroadcastReceiver {
                 this.counterPowerPressed));
 
         Log.d(this.getClass().getName(),
-                String.format("last pressed at = %s", this.previousPressedAt));
+                String.format("last pressed at = %s", this.pressedAt));
 
-        if (this.previousPressedAt == null) {
+        this.previousPressedAt = this.pressedAt;
+        this.pressedAt = new Date();
 
-            this.previousPressedAt = new Date();
-
-        } else {
+        if (this.counterPowerPressed == 2) {
 
             Date now = new Date();
             Long duration = now.getTime() - this.previousPressedAt.getTime();
+
+            Log.d(this.getClass().getName(), String.format("less than %s seconds ? %s",
+                    this.INTERVAL, duration <= this.INTERVAL * 1000 ? "yes" : "no"));
+
             if ((duration <= this.INTERVAL * 1000) &&
                     (this.counterPowerPressed >= 2)) {
 
@@ -56,11 +59,10 @@ public class ScreenActionReceiver extends BroadcastReceiver {
                 context.startService(i);
 
                 this.light = !this.light;
-                this.previousPressedAt = null;
 
             }
         }
 
-        if (this.counterPowerPressed >= 2) this.counterPowerPressed = 1;
+        if (this.counterPowerPressed >= 2) this.counterPowerPressed = 0;
     }
 }

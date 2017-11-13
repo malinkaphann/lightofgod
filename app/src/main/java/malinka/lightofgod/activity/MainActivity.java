@@ -15,7 +15,7 @@ import malinka.lightofgod.util.FlashLightManager;
 public class MainActivity extends AppCompatActivity {
 
     private boolean started = false;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             // start a service only if camera is supported
             if (FlashLightManager.isFlashSupported(getApplication().getPackageManager())) {
-                ComponentName component = startService(new Intent(getBaseContext(),
+                ComponentName component = startService(new Intent(this,
                         PowerOnListener.class));
                 if(component == null) {
                     this.started = false;
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             this.started = false;
             Log.d(this.getClass().getName(), String.format("send command to %s to stop service",
                     PowerOnListener.class.getName()));
-            boolean status = stopService(new Intent(getBaseContext(), PowerOnListener.class));
+            boolean status = stopService(new Intent(this, PowerOnListener.class));
             if(!status) {
                 Log.d(this.getClass().getName(), String.format("service %s is not running",
                         PowerOnListener.class.getName()));

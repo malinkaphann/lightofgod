@@ -1,5 +1,6 @@
 package malinka.lightofgod.service;
 
+import android.app.Notification;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
@@ -8,7 +9,7 @@ import android.hardware.Camera;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
-
+import malinka.lightofgod.activity.MainActivity;
 import malinka.lightofgod.receiver.ScreenActionReceiver;
 import malinka.lightofgod.util.FlashLightManager;
 
@@ -31,6 +32,8 @@ public class PowerOnListener extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        if(intent == null) return super.onStartCommand(intent, flags, startId);
 
         Log.d(this.getClass().getName(), String.format("received command to start as %s", startId));
 
@@ -86,4 +89,5 @@ public class PowerOnListener extends Service {
     public IBinder onBind(Intent intent) {
         return binder;
     }
+
 }
